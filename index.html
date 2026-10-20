@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي مهارات وورد وإكسل - السنة التحضيرية</title>
+    <!-- تحميل خط كاهير وتايليند CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        pastelPink: '#fdf2f8',
+                        pastelPurple: '#f3e8ff',
+                        pastelBlue: '#e0f2fe',
+                        brandPink: '#db2777',
+                        brandPurple: '#7c3aed',
+                        brandBlue: '#0284c7',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between p-4 sm:p-6">
+
+    <!-- شاشة رأسية وتجميلية -->
+    <header class="w-full max-w-4xl flex justify-between items-center py-4 px-6 glass-card rounded-2xl shadow-sm mb-4">
+        <div class="flex items-center gap-3">
+            <div class="bg-gradient-to-tr from-brandPink to-brandPurple text-white p-3 rounded-xl shadow-md text-2xl">
+                👩‍💻
+            </div>
+            <div>
+                <h1 class="font-bold text-gray-800 text-lg sm:text-xl">تحدي مهارات الحاسب (Word & Excel)</h1>
+                <p class="text-xs text-gray-500">مقرر السنة التحضيرية - مهارات الحاسب الآلي</p>
+            </div>
+        </div>
+        <div id="score-board" class="hidden flex items-center gap-4">
+            <div class="bg-purple-100 text-brandPurple px-4 py-1.5 rounded-full font-bold text-sm shadow-inner">
+                ✨ النقاط: <span id="current-score">0</span>
+            </div>
+            <div class="bg-blue-100 text-brandBlue px-4 py-1.5 rounded-full font-bold text-sm shadow-inner">
+                ⏳ الوقت: <span id="timer">30</span> ث
+            </div>
+        </div>
+    </header>
+
+    <!-- الحاوية الرئيسية للعبة -->
+    <main class="w-full max-w-4xl flex-1 flex flex-col justify-center items-center mb-6">
+        
+        <!-- 1. شاشة البداية -->
+        <div id="screen-welcome" class="glass-card w-full p-8 sm:p-12 rounded-3xl shadow-xl text-center space-y-6 floating">
+            <div class="inline-block bg-pink-100 text-brandPink text-sm font-semibold px-4 py-1.5 rounded-full mb-2">
+                🌟 أهلاً بكِ في عالم الاحتراف الرقمي
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-black text-gray-800 leading-tight">
+                اختبري مهاراتكِ في برامج <span class="text-brandPink">Word</span> و <span class="text-brandBlue">Excel</span>!
+            </h2>
+            <p class="text-gray-600 max-w-xl mx-auto text-sm sm:text-base">
+                استعدي للإبحار في عالم الجداول الإلكترونية، دوال الـ SUM و IF، تنسيق المستندات، دمج المراسلات، والمخططات البيانية بطريقة ممتعة وتفاعلية.
+            </p>
+            <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="startGame()" class="bg-gradient-to-r from-brandPink to-brandPurple text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg hover:opacity-95 transform hover:-translate-y-0.5 transition duration-200 text-lg">
+                    ابدئي التحدي الآن 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. شاشة الأسئلة -->
+        <div id="screen-quiz" class="hidden glass-card w-full p-6 sm:p-10 rounded-3xl shadow-xl space-y-6">
+            <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+                <span id="question-progress" class="text-sm font-bold text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">السؤال 1 من 10</span>
+                <span id="question-category" class="text-xs font-bold px-3 py-1 rounded-full bg-pink-50 text-brandPink">Word - إدراج</span>
+            </div>
+
+            <div>
+                <h3 id="question-text" class="text-lg sm:text-2xl font-bold text-gray-800 leading-snug">
+                    <!-- نص السؤال هنا -->
+                </h3>
+            </div>
+
+            <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <!-- الخيارات ستدرج هنا برمجياً -->
+            </div>
+
+            <!-- زر التالي / التغذية الراجعة -->
+            <div id="feedback-box" class="hidden p-4 rounded-2xl text-sm font-bold flex items-center justify-between">
+                <span id="feedback-text"></span>
+                <button onclick="nextQuestion()" class="bg-gray-800 text-white px-6 py-2 rounded-xl text-sm hover:bg-gray-700 transition">
+                    السؤال التالي ⬅️
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. شاشة النهاية والنتائج -->
+        <div id="screen-result" class="hidden glass-card w-full p-8 sm:p-12 rounded-3xl shadow-xl text-center space-y-6">
+            <div class="text-6xl mb-2">🏆</div>
+            <h2 class="text-3xl font-black text-gray-800">أنهيتِ التحدي بنجاح مذهل!</h2>
+            <p id="result-message" class="text-gray-600 text-lg">لقد جمعتِ عدد نقاط رائع يدل على تميزكِ في مقرر السنة التحضيرية.</p>
+            <div class="bg-purple-50 p-6 rounded-2xl max-w-xs mx-auto border border-purple-100 shadow-inner">
+                <p class="text-sm text-gray-500 font-semibold">مجموع نقاطكِ النهائية</p>
+                <p id="final-score" class="text-4xl font-black text-brandPurple mt-1">0 / 100</p>
+            </div>
+            <div class="pt-4">
+                <button onclick="restartGame()" class="bg-gradient-to-r from-brandBlue to-brandPurple text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg hover:opacity-95 transition duration-200">
+                    إعادة التحدي 🔄
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="text-center text-xs text-gray-500 py-2">
+        تصميم تفاعلي خاص بطالبات السنة التحضيرية 🌸 مهارات الحاسب الآلي
+    </footer>
+
+    <!-- سكربت اللعبة التفاعلية -->
+    <script>
+        // بنك الأسئلة الشامل المبني على عروض الوورد والإكسل المرفقة
+        const questions = [
+            {
+                category: "Excel - الدوال الأساسية",
+                question: "أي من الدوال التالية في برنامج Excel تُستخدم لإيجاد المتوسط الحسابي لنطاق من الخلايا (مثل B2 إلى B6)؟",
+                options: ["SUM(B2:B6)", "AVERAGE(B2:B6)", "COUNT(B2:B6)", "MIN(B2:B6)"],
+                correct: 1,
+                explanation: "دالة AVERAGE تُستخدم لحساب المتوسط الحسابي."
+            },
+            {
+                category: "Word - الجداول",
+                question: "لإضافة بيانات داخل خلايا جدول في برنامج Microsoft Word والانتقال السريع للخلايا التالية، نستخدم مفتاح:",
+                options: ["Enter", "Shift", "Tab", "Ctrl"],
+                correct: 2,
+                explanation: "النقر على مفتاح Tab ينقل المؤشر للخلية التالية في الجدول."
+            },
+            {
+                category: "Excel - الدوال الشرطية",
+                question: "ما هي بنية الدالة الشرطية IF الصحيحة لتحديد ما إذا كانت الدرجة في H2 أكبر من أو تساوي 60 تعطي 'PASS' وإلا 'FAIL'؟",
+                options: [
+                    "=IF(H2>=60,'PASS','FAIL')",
+                    "=SUM(H2,60)",
+                    "=COUNTIF(H2,'PASS')",
+                    "=AVERAGE(H2>=60)"
+                ],
+                correct: 0,
+                explanation: "بنية دالة IF: (الشرط, قيمة الصواب, قيمة الخطأ)."
+            },
+            {
+                category: "Word - التصميم",
+                question: "من أين يمكننا إضافة علامة مائية (Watermark) مخصصة أو جاهزة لمستند الوورد؟",
+                options: [
+                    "علامة التبويب (إدراج) ← وسائط",
+                    "علامة التبويب (تصميم) ← خلفية الصفحة",
+                    "علامة التبويب (تخطيط) ← إعداد الصفحة",
+                    "علامة التبويب (عرض) ← نافذة"
+                ],
+                correct: 1,
+                explanation: "علامة مائية ولون الصفحة وحدودها توجد تحت علامة التبويب (تصميم)."
+            },
+            {
+                category: "Excel - دوال العد والحدود",
+                question: "ما هي الدالة التي تحسب الخلايا ذات المحتوى الرقمي فقط في برنامج Excel؟",
+                options: ["COUNTA", "COUNT", "MAX", "SUM"],
+                correct: 1,
+                explanation: "دالة COUNT تحسب الأرقام فقط، بينما COUNTA تحسب الخلايا غير الفارغة."
+            },
+            {
+                category: "Word - المراسلات",
+                question: "ما هما الملفان الأساسيان اللذان تتطلبهما عملية دمج المراسلات (Mail Merge) في برنامج Word؟",
+                options: [
+                    "ملف صوتي وملف فيديو",
+                    "ملف بيانات (أسماء/درجات) وملف الرسالة (النموذج الأساسي)",
+                    "ملف اكسل فارغ وملف وورد مغلق",
+                    "ملفا تصميم SmartArt"
+                ],
+                correct: 1,
+                explanation: "دمج المراسلات يتطلب ملف بيانات وملف رسالة (مثل شهادة تقدير)."
+            },
+            {
+                category: "Excel - تنسيق الخلايا",
+                question: "ما هي اختصار لوحة المفاتيح الذي يفتح نافذة (تنسيق خلايا - Format Cells) التي تحتوي على 6 تبويبات؟",
+                options: ["Ctrl + P", "Ctrl + F", "Ctrl + 1", "Ctrl + C"],
+                correct: 2,
+                explanation: "الضغط على Ctrl + 1 يفتح نافذة تنسيق الخلايا الشهيرة."
+            },
+            {
+                category: "Word - المراجع",
+                question: "لإضافة حاشية سفلية (Footnote) لنص محدد في مستند الوورد، نذهب إلى علامة التبويب:",
+                options: ["مراجع (References)", "عرض (View)", "إدراج (Insert)", "تخطيط (Layout)"],
+                correct: 0,
+                explanation: "الحواشي والتعليقات الختامية وجداول المحتويات تقع تحت علامة التبويب (مراجع)."
+            },
+            {
+                category: "Excel - التنسيق الشرطي",
+                question: "من خلال علامة التبويب (الشريط الرئيسي)، لتمييز القيم الأكبر من 90 بلون معين، نستخدم ميزة:",
+                options: ["فرز وتصفية", "التنسيق الشرطي (Conditional Formatting)", "حماية ورقة العمل", "إدراج مخطط بياني"],
+                correct: 1,
+                explanation: "التنسيق الشرطي وقواعد تمييز الخلايا تتيح تمييز القيم بسرعة."
+            },
+            {
+                category: "Word - العرض والطباعة",
+                question: "طريقة العرض في Word التي تعرض المستند كصفحة ويب بدون فواصل صفحات هي:",
+                options: ["تخطيط الطباعة", "وضع القراءة", "تخطيط ويب", "المسودة"],
+                correct: 2,
+                explanation: "تخطيط ويب يظهر المستند كصفحة ويب متصلة بدون فواصل."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 30;
+        let answered = false;
+
+        // نظام المؤثرات الصوتية البسيطة عبر Web Audio API
+        function playSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                }
+            } catch (e) {
+                console.log("Audio not supported or blocked.");
+            }
+        }
+
+        function startGame() {
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            document.getElementById('score-board').classList.remove('hidden');
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            clearInterval(timer);
+            timeLeft = 30;
+            document.getElementById('timer').innerText = timeLeft;
+            startTimer();
+
+            answered = false;
+            const q = questions[currentQuestionIndex];
+            document.getElementById('question-progress').innerText = `السؤال ${currentQuestionIndex + 1} من ${questions.length}`;
+            document.getElementById('question-category').innerText = q.category;
+            document.getElementById('question-text').innerText = q.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-right p-4 rounded-2xl border-2 border-gray-200 bg-white/80 hover:bg-purple-50 hover:border-brandPurple transition font-semibold text-gray-700 shadow-sm flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span><span class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center text-xs text-gray-400 font-bold">${String.fromCharCode(1575 + index)}</span>`;
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('feedback-box').classList.add('hidden');
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function handleTimeout() {
+            if (answered) return;
+            answered = true;
+            playSound('wrong');
+            const q = questions[currentQuestionIndex];
+            highlightCorrectAnswer();
+            showFeedback(false, "انتهى الوقت! الإجابة الصحيحة هي: " + q.options[q.correct]);
+        }
+
+        function selectOption(selectedIndex, buttonElement) {
+            if (answered) return;
+            answered = true;
+            clearInterval(timer);
+
+            const q = questions[currentQuestionIndex];
+            const optionsButtons = document.getElementById('options-container').children;
+
+            if (selectedIndex === q.correct) {
+                buttonElement.classList.remove('bg-white/80', 'border-gray-200');
+                buttonElement.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                score += 10;
+                document.getElementById('current-score').innerText = score;
+                playSound('correct');
+                showFeedback(true, "إجابة رائعة وصحيحة! أحسنتِ 🌸");
+            } else {
+                buttonElement.classList.remove('bg-white/80', 'border-gray-200');
+                buttonElement.classList.add('bg-red-100', 'border-red-400', 'text-red-800');
+                playSound('wrong');
+                highlightCorrectAnswer();
+                showFeedback(false, "إجابة غير موفقة. " + q.explanation);
+            }
+        }
+
+        function highlightCorrectAnswer() {
+            const q = questions[currentQuestionIndex];
+            const optionsButtons = document.getElementById('options-container').children;
+            if (optionsButtons[q.correct]) {
+                optionsButtons[q.correct].classList.remove('bg-white/80', 'border-gray-200');
+                optionsButtons[q.correct].classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+            }
+        }
+
+        function showFeedback(isCorrect, message) {
+            const feedbackBox = document.getElementById('feedback-box');
+            feedbackBox.classList.remove('hidden');
+            feedbackBox.className = `p-4 rounded-2xl text-sm font-bold flex flex-col sm:flex-row items-center justify-between gap-3 ${isCorrect ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-pink-50 text-brandPink border border-pink-200'}`;
+            document.getElementById('feedback-text').innerText = message;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('score-board').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${score} / 100`;
+
+            let msg = "";
+            if (score >= 90) {
+                msg = "ممتاز جداً! أنتِ محترفة حقيقية في برامج وورد وإكسل وصحبة متميزة للسنة التحضيرية! 🌟";
+            } else if (score >= 60) {
+                msg = "أداء رائع ومبشر! لديكِ خلفية ممتازة وتستطيعين مراجعة بعض التفاصيل لتبلغي القمة. 💪";
+            } else {
+                msg = "حاول مرة أخرى! مراجعة عروض وورد وإكسل ستساعدكِ على حصد الدرجة الكاملة بسهولة. ✨";
+            }
+            document.getElementById('result-message').innerText = msg;
+        }
+
+        function restartGame() {
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-welcome').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
